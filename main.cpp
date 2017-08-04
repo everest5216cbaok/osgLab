@@ -5,21 +5,24 @@
 #include <osg/Group>
 #include <osg/ShapeDrawable>
 
+#include <iostream>
+
 #include "models/node.h"
 #include "models/stateset.h"
 #include "shaders/viewer_light.h"
-
-void modelConfig()
-{
-    
-}
+#include "callbacks/CameraGluLookAt.h"
 
 int main(int argc, char** argv)
 {
     osgViewer::Viewer viewer;
 
     //gen box
-    R_Geode rBox = getBox_Geode_R();
+    R_Geometry rGeom = createNode();
+    R_Geode rBox = new osg::Geode;
+    rBox->addChild(rGeom);
+
+    //R_Geode rBox = getBox_Geode_R();
+
     //set StateSet
     P_StateSet pStateSet = rBox->getOrCreateStateSet();
     
@@ -33,6 +36,18 @@ int main(int argc, char** argv)
     osg::ref_ptr<osg::Group> root = new osg::Group;
     root->addChild(rBox);
 
-    viewer.setSceneData(root);
+    osg::Camera* pCamera = viewer.getCamera();
+    osg::Vec3 eye, center, up;
+
+    pCamera->setUpdateCallback(new CameraCallback(viewer.getCamera()));
+
+    //osg::ref_ptr<osg::Node> dt = osgDB::readRefNodeFile("dumptruck.osg");
+    R_Geode dt = getBox_Geode_R();
+    P_StateSet pStateSet2 = dt->getOrCreateStateSet();
+
+    setTransparencyStateSet2(pStateSet2);
+
+
+    viewer.setSceneData(dt);
     return viewer.run();
 }
