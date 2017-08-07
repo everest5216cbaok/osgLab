@@ -21,7 +21,7 @@ endmacro()
 file(GLOB_RECURSE CURRENT_HEADERS  *.h*)
 source_group("Headers" FILES ${CURRENT_HEADERS}) 
 
-add_executable( OsgLab main.cpp ${CURRENT_HEADERS})
+add_executable( OsgLab main.cpp DepthPeeling.cpp ${CURRENT_HEADERS})
 config_project( OsgLab OPENTHREADS )
 config_project( OsgLab OSG )
 config_project( OsgLab OSGDB )

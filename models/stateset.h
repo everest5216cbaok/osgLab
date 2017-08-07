@@ -41,6 +41,20 @@ void setTransparencyStateSet2(P_StateSet pStateSet)
 
 }
 
+void setTransparencyStateSet3(P_StateSet pStateSet)
+{
+    // set the states of the truck so that it actually appears transparently and nicely lit.
+    pStateSet->setMode(GL_BLEND, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+    pStateSet->setAttribute(new osg::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA), osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+    osg::Material* material = new osg::Material;
+    material->setAmbient(osg::Material::FRONT_AND_BACK, osg::Vec4(0.2f, 0.2f, 0.2f, 0.3f));
+    material->setDiffuse(osg::Material::FRONT_AND_BACK, osg::Vec4(0.8f, 0.8f, 0.8f, 0.3f));
+    pStateSet->setAttribute(material, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+    osg::LightModel *lm = new osg::LightModel();
+    lm->setTwoSided(true);
+    pStateSet->setAttribute(lm, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+}
+
 
 void setProgramStateSet(P_StateSet pStateSet, R_Program rProgram)
 {
